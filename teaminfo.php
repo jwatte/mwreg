@@ -59,7 +59,7 @@ function get_teams_by_leader($leader) {
 }
 
 function is_valid_team_name($name) {
-    return strlen($name) >= 5 && strpos($name, '@') === false && strpos($name, '://') === false &&
+    return strlen($name) >= 5 && strlen($name) <= 95 && strpos($name, '@') === false && strpos($name, '://') === false &&
         strpos($name, '<') === false && strpos($name, '&') === false;
 }
 
