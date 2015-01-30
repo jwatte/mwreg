@@ -45,6 +45,7 @@ page_header('Mech Warfare Registration -- Teams');
             echo "<div class='result'>".htmlquote($team_ok)."</div>";
         }
         echo "<div class='list mechs'>";
+        print_r($team);
         echo "<div class='heading'>Team Mechs</div>";
         foreach ($team['mechs'] as $mech) {
             echo "<div class='info mech'>";
@@ -55,13 +56,13 @@ page_header('Mech Warfare Registration -- Teams');
             echo "</div>";
         }
         if ($_ismember) {
-            $mechs = db_query("SELECT m.mechid AS mechid, m.name AS NAME, m.builder AS builder, m.team AS team, m.url AS URL, t.name AS teamname FROM mechs m LEFT OUTER JOIN teams t ON m.team = t.teamid WHERE builder=:userid",
+            $mechs = db_query("SELECT m.mechid AS mechid, m.name AS name, m.builder AS builder, m.team AS team, m.url AS URL, t.name AS teamname FROM mechs m LEFT OUTER JOIN teams t ON m.team = t.teamid WHERE builder=:userid",
                     array('userid'=>$user['userid']));
             if ($mechs) {
                 echo "<form method='post'>";
                 echo get_csrf_input();
                 echo "<div class='formfield'><span class='label'>Add Mech:</span><span class='value'>";
-                echo "<input type='select' name='mechid'>";
+                echo "<select name='mechid'>";
                 foreach ($mechs as $m) {
                     $str = "";
                     if ($m['team']) {
@@ -69,7 +70,7 @@ page_header('Mech Warfare Registration -- Teams');
                     }
                     echo "<option value='$m[mechid]'>".htmlquote($m['name'])."</option>";
                 }
-                echo "</input>";
+                echo "</select>";
                 echo "</span></div>";
                 echo "<div class='formfield'><span class='label'>&nbsp;</span><span class='value'>";
                 echo "<button name='action' value='addmech'>Add to Team</button></span></div>";

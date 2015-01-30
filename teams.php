@@ -78,6 +78,24 @@ if ($_action && !verify_csrf(@$_POST['csrf'])) {
     } else {
         reject_team_member($_tid, $_user);
     }
+} else if ($_action == 'addmech') {
+    $_tid = @$_GET['id'];
+    $_team = get_team_by_id($_tid);
+    $_mechid = @$_POST['mechid'];
+    $_minfo = get_mech_by_id($_mechid);
+    if (!$_team) {
+        $team_error = "There is no team ID $_tid.";
+    } else if (!$_minfo) {
+        $teams_error = "There exists no mech with id $_mechid.";
+    } else if ($_minfo['team']) {
+        $teams_error = "The mech $_minfo[name] is already on team id $_minfo[team].";
+    } else if ($_minfo['builder'] != $user['userid']) {
+        $teams_error = "Only the builder of a mech can add it to a team.";
+    } else if (!is_team_member($user['userid'], $_tid)) {
+        $teams_error = "User $user[userid] is not member of team $_tid.";
+    } else {
+        add_mech_to_team($_mechid, $_team);
+    }
 }
 require_once 'page/teams.php';
 
