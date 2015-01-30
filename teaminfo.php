@@ -147,4 +147,27 @@ function reject_team_member($teamid, array $iuser) {
     // don't send email
 }
 
+function remove_member_from_team(array $team, array $member) {
+    $owner = db_query("SELECT * FROM teams WHERE teamid=:teamid AND leader=:userid",
+        array('teamid'=>$team['teamid'], 'userid'=>$member['userid']));
+    if ($owner) {
+        errors_fatal("Cannot remove the team leader from a team (owner $member[userid], team $team[teamid].)");
+    }
+    db_query("DELETE FROM teammembers WHERE teamid=:teamid AND userid=:userid",
+        array('teamid'=>$team['teamid'], 'userid'=>$member['userid']));
+    mail($member['email'],
+        "You were removed as member from team $team[name]",
+        "The administrator for team $team[name] on Mech Warfare Registration removed you from membership of the team.\n".
+        "You can view information about this team at:\n".
+        "$URLHOST$ROOTPATH/teams.php?id=$team[teamid]\n",
+        "From: $MAILFROM");
+    $leader = get_user_by_id($team['leader']);
+    mail($leader['email'],
+        "User $member[name] was removed from team $team[name]",
+        "User $member[name] id $member[userid] was removed from membership in team $team[name] on Mech Warfare Registration.\n".
+        "You can view information about this team at:\n".
+        "$URLHOST$ROOTPATH/teams.php?id=$team[teamid]\n",
+        "From: $MAILFROM");
+}
+
 

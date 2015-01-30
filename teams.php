@@ -97,6 +97,38 @@ if ($_action && !verify_csrf(@$_POST['csrf'])) {
     } else {
         add_mech_to_team($_mechid, $_team);
     }
+} else if ($_action == 'removemech') {
+    $_team = get_team_by_id($_GET['id']);
+    if (!$_team) {
+        errors_fatal("There is no team '$_GET[id]'.");
+    }
+    $_mech = get_mech_by_id($_POST['mechid']);
+    if (!$_mech) {
+        errors_fatal("There is no mech '$_POST[mechid]'.");
+    }
+    if (!is_team_admin($user['userid'], $_team) &&
+        !is_mech_builder($user['userid'], $_mech)) {
+        $teams_error = "User $user[userid] is not an admin of $_team[name].";
+    } else {
+        remove_mech_from_team($_mech, $_team);
+        $teams_error = "Mech $_mech[name] removed from team $_team[name].";
+    }
+} else if ($_action == 'removemember') {
+    $_team = get_team_by_id($_GET['id']);
+    if (!$_team) {
+        errors_fatal("There is no team '$_GET[id]'.");
+    }
+    $_user = get_user_by_id($_POST['userid']);
+    if (!$_user) {
+        errors_fatal("There is no user '$_POST[userid]'.");
+    }
+    if (!is_team_admin($user['userid'], $_team) &&
+        $user['userid'] != $_user['userid']) {
+        $teams_error = "You do not have permission to remove $_user[name] from $_team[name].";
+    } else {
+        remove_member_from_team($_team, $_user);
+        $teams_error = "Member $_user[name] was removed from team $_team[name].";
+    }
 }
 require_once 'page/teams.php';
 

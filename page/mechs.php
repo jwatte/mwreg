@@ -51,11 +51,12 @@ if ($_action && $_mechid) {
     }
     else {
         $allmechs = get_all_mechs();
+        echo "<div class='heading'>All Mechs</div>";
         echo "<div class='allmechs'>";
         foreach ($allmechs as $mech) {
-            echo "<div class='mechrow'>";
-            echo "<div class='name'>".htmlquote($mech['name'])."</div>";
-            echo "<div class='team'>".htmlquote($mech['teamname'])."</div>";
+            echo "<div class='info mechrow'>";
+            echo "<div class='name'><span class='label'>Name</span><span class='value'>".htmlquote($mech['name'])."</span></div>";
+            echo "<div class='team'><span class='label'>Team</span></span class='value'>".htmlquote($mech['teamname'])."</span></div>";
             echo "</div>";
         }
         echo "</div>";
@@ -67,9 +68,9 @@ if ($_action && $_mechid) {
         } else {
             echo "<div class='yourmechs'><div class='heading'>Your Mechs</div>";
             foreach ($usermechs as $mech) {
-                echo "<div class='mechrow'>";
-                echo "<div class='name'>".htmlquote($mech['name'])."</div>";
-                echo "<div class='team'>".htmlquote($mech['teamname'])."</div>";
+                echo "<div class='info mechrow'>";
+                echo "<div class='name'><span class='label'>Name</span><span class='value'>".htmlquote($mech['name'])."</span></div>";
+                echo "<div class='team'><span class='label'>Team</span><span class='value'>".htmlquote($mech['teamname'])."</span></div>";
                 echo "</div>";
             }
             echo "</div>";
@@ -82,7 +83,7 @@ if ($_action && $_mechid) {
        echo "<input type='hidden' name='url' value=''/>";
        echo "<input type='hidden' name='mechid' value='new'/>";
 ?>
-<div class='info'>You may submit up to three mechs, that can then be assigned to teams, 
+<div class='rules'>You may submit up to three mechs, that can then be assigned to teams, 
 that can then apply for events.</div>
 </form><?php
     }

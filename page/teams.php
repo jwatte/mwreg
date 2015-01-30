@@ -52,6 +52,10 @@ page_header('Mech Warfare Registration -- Teams');
             echo "<div class='mechname'>".htmlquote($mech['name'])."</div>";
             echo "<div class='mechurl'>".htmlquote($mech['url'])."</div>";
             echo "<div class='mechbuilder'>".htmlquote($mech['builder'])."</div>";
+            if ($_islead || $mech['builder'] == $user['userid']) {
+                echo "<form method='post' class='action remove'>".get_csrf_input()."<input type='hidden' name='mechid' value='$mech[mechid]'/>";
+                echo "<button name='action' value='removemech'>Remove</button></form>";
+            }
             echo "</div>";
         }
         if ($_ismember) {
@@ -86,9 +90,12 @@ page_header('Mech Warfare Registration -- Teams');
             echo "<div class='userid'>".htmlquote($member['userid'])."</div>";
             echo "<div class='username'>".htmlquote($member['name'])."</div>";
             echo "<div class='membersince'>".htmlquote($member['membersince'])."</div>";
-            echo "<div class='teamadmin'>".htmlquote($member['teamadmin'])."</div>";
+            echo "<div class='teamadmin'>".($member['teamadmin'] ? "admin" : "member")."</div>";
             if ($team['leader'] === $member['userid']) {
                 echo "<div class='teamleader'>(Leader)</div>";
+            } else if ($_islead) {
+                echo "<form method='post' class='action remove'>".get_csrf_input()."<input type='hidden' name='userid' value='$member[userid]'/>";
+                echo "<button name='action' value='removemember'>Remove</button></form>";
             }
             echo "</div>";
             if ($member['userid'] === $user['userid']) {

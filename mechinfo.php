@@ -82,6 +82,28 @@ function add_mech_to_team($mechid, array $team) {
         "From: $MAILFROM");
 }
 
+function remove_mech_from_team(array $mech, array $team) {
+    $builder = get_user_by_id($mech['builder']);
+    if (!$builder) {
+        errors_fatal("Bad mech info in remove_mech_from_team : " . print_r($mech, true));
+    }
+    db_query("UPDATE mechs SET team=NULL WHERE mechid=:mechid AND team=:teamid",
+        array('mechid'=>$mech['mechid'], 'teamid'=>$team['teamid']));
+    mail($builder['email'],
+        "Your mech was removed from team $team[name]",
+        "The mech $mech[name] that you are listed as builder for was removed \n".
+        "from the team $team[name]. You can view the team roster at: \n".
+        "$URLHOST$ROOTPATH/teams.php?id=$team[teamid]\n",
+        "From: $MAILFROM");
+    $leader = get_user_by_id($team['leader']);
+    mail($leader['email'],
+        "The mech '$mech[name]' was removed from team '$team[name]'",
+        "The mech '$mech[name]' by builder '$builder[name]' was removed \n".
+        "from the team $team[name]. You can view the team roster at: \n".
+        "$URLHOST$ROOTPATH/teams.php?id=$team[teamid]\n",
+        "From: $MAILFROM");
+}
+
 function get_events_for_mech($mid) {
     return db_query("SELECT e.name AS eventname, e.starttime AS eventtime, u.name AS regusername, m.regtime AS regtime ".
         "FROM mech_event_registration m LEFT OUTER JOIN events e ON m.eventid=e.eventid ".

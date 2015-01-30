@@ -143,3 +143,25 @@ div.list div.info div {
     display: inline-block;
     margin: 0.2em 0.5em;
 }
+div.teaminfo:nth-child(even) {
+    background-color: #202020;
+}
+div.info:nth-child(even) {
+    background-color: #202020;
+}
+div.info span.label {
+    min-width: 5em;;
+    padding-right: 1em;
+}
+div.mechrow {
+    padding: 0.5em 1em;
+}
+div.info form {
+    display: inline-block;
+}
+div.info div {
+    min-width: 5em;
+}
+div.text {
+    margin-top: 1em;
+}
