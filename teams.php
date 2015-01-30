@@ -5,6 +5,7 @@ require_once 'dbconnect.php';
 require_once 'userinfo.php';
 require_once 'pages.php';
 require_once 'teaminfo.php';
+require_once 'mechinfo.php';
 
 $_action = @$_POST['action'];
 if ($_action && !verify_csrf(@$_POST['csrf'])) {
@@ -91,7 +92,7 @@ if ($_action && !verify_csrf(@$_POST['csrf'])) {
         $teams_error = "The mech $_minfo[name] is already on team id $_minfo[team].";
     } else if ($_minfo['builder'] != $user['userid']) {
         $teams_error = "Only the builder of a mech can add it to a team.";
-    } else if (!is_team_member($user['userid'], $_tid)) {
+    } else if (!is_team_member($user['userid'], $_team)) {
         $teams_error = "User $user[userid] is not member of team $_tid.";
     } else {
         add_mech_to_team($_mechid, $_team);

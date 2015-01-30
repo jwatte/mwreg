@@ -45,7 +45,6 @@ page_header('Mech Warfare Registration -- Teams');
             echo "<div class='result'>".htmlquote($team_ok)."</div>";
         }
         echo "<div class='list mechs'>";
-        print_r($team);
         echo "<div class='heading'>Team Mechs</div>";
         foreach ($team['mechs'] as $mech) {
             echo "<div class='info mech'>";
@@ -64,11 +63,11 @@ page_header('Mech Warfare Registration -- Teams');
                 echo "<div class='formfield'><span class='label'>Add Mech:</span><span class='value'>";
                 echo "<select name='mechid'>";
                 foreach ($mechs as $m) {
-                    $str = "";
+                    $str = $m['name'];
                     if ($m['team']) {
-                        $str = " (On team $m[teamname])";
+                        $str .= " (On team $m[teamname])";
                     }
-                    echo "<option value='$m[mechid]'>".htmlquote($m['name'])."</option>";
+                    echo "<option value='$m[mechid]'>".htmlquote($str)."</option>";
                 }
                 echo "</select>";
                 echo "</span></div>";

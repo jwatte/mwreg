@@ -62,15 +62,15 @@ function add_mech_to_team($mechid, array $team) {
         errors_fatal("Bad teamid in add_mech_to_team");
     }
     if (!(int)$mechid) {
-        errors_fatal("Bad mech id in add_mech_to_team");
+        errors_fatal("Bad mech id '$mechid' in add_mech_to_team");
     }
     $mech = get_mech_by_id($mechid);
     if (!$mech) {
-        errors_fatal("Bad mech in add_mech_to_team");
+        errors_fatal("Bad mech '$mechid' in add_mech_to_team : " . print_r($mech, true));
     }
-    $builder = get_user_by_id($mech['userid']);
+    $builder = get_user_by_id($mech['builder']);
     if (!$builder) {
-        errors_fatal("Bad mech info in add_mech_to_team");
+        errors_fatal("Bad mech info '$mechid' in add_mech_to_team : " . print_r($mech, true));
     }
     db_query("UPDATE mechs SET team=:teamid WHERE mechid=:mechid",
         array('teamid'=>$team['teamid'], 'mechid'=>$mechid));
