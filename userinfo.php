@@ -317,10 +317,19 @@ function user_change_password($user, $password) {
     return true;
 }
 
-function get_user_by_id($userid) {
-    $ret = db_query("SELECT * FROM users WHERE userid=:id", array('id'=>$userid));
+function get_user_by_id($userid, $require_valid=true) {
+    $str = "";
+    if ($require_valid) {
+        $str = " AND verified=1";
+    }
+    $ret = db_query("SELECT * FROM users WHERE userid=:id $str", array('id'=>$userid));
     if (!is_array($ret)) {
         return null;
     }
     return $ret[0];
+}
+
+function get_admin_users($level = 1) {
+    return db_query("SELECT * FROM users WHERE adminlevel>:level AND verified=1",
+        array('level'=>$level));
 }

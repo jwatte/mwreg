@@ -132,7 +132,7 @@ div.info.team span.label {
 .result {
     color: #e0e030;
 }
-form.button {
+form button {
     display: inline-block;
     background-color: #703030;
     color: #ffffff;

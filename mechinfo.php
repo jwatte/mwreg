@@ -83,6 +83,9 @@ function add_mech_to_team($mechid, array $team) {
 }
 
 function remove_mech_from_team(array $mech, array $team) {
+    global $URLHOST;
+    global $ROOTPATH;
+    global $MAILFROM;
     $builder = get_user_by_id($mech['builder']);
     if (!$builder) {
         errors_fatal("Bad mech info in remove_mech_from_team : " . print_r($mech, true));
