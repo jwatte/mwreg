@@ -6,12 +6,48 @@ page_header('Mech Warfare Registration -- Events');
 <?
     $_isadmin = $user['adminlevel'] > 0;
     if (@$_GET['id']) {
+        $event = get_event_by_id($_GET['id']);
+        if (!$event) {
+            errors_fatal("There is no event id $_GET[id]");
+        }
         /* display one event */
         if ($_isadmin) {
+            function fn($name, $value) {
+                echo "<div class='formfield'><span class='label'>$name:</span><span class='field'><input type='text' name='$name' value='".htmlquote($value)."'/></span></div>";
+            }
+            echo "<form method='post'>";
         } else {
+            function fn($name, $value) {
+                echo "<div class='info'><div class='label'>$name:</div><div class='value'>".htmlquote($value)."</div></div>";
+            }
+            echo "<div class='list event'>";
+        }
+        fn('name', $event['name']);
+        fn('location', $event['location']);
+        fn('starttime', $event['starttime']);
+        fn('endtime', $event['endtime']);
+        fn('url', $event['url']);
+        if ($_admin) {
+            echo get_csrf_input();
+            echo "<button name='action' value='editevent'>Update Event</button>";
+            echo "</form>";
+        } else {
+            echo "</div>";
         }
     } else if ($_action == 'proposeevent') {
         /* empty propose-event form */
+        function fn($name, $value) {
+            echo "<div class='formfield'><span class='label'>$name:</span><span class='field'><input type='text' name='$name' value='".htmlquote($value)."'/></span></div>";
+        }
+        echo "<form method='post'>";
+        fn('name', $event['name']);
+        fn('location', $event['location']);
+        fn('starttime', $event['starttime']);
+        fn('endtime', $event['endtime']);
+        fn('url', $event['url']);
+        echo get_csrf_input();
+        echo "<button name='action' value='proposeeventsubmit'>Propose Event</button>";
+        echo "</form>";
     } else if ($_action == 'proposeeventsubmit') {
         echo "<div class='result'>Thank you for submitting a proposed event. You will receive ".
             "an e-mail verifying the proposal, and another e-mail once a moderator has ".
@@ -34,10 +70,10 @@ page_header('Mech Warfare Registration -- Events');
         echo "<form method='post' class='propose event'>".get_csrf_input()."<button name='action' value='proposeevent'>Propose New Event</button></form>";
     }
     if ($_isadmin) {
-        echo "<div class='header'>Proposed Events</div>";
+        echo "<div class='heading'>Proposed Events</div>";
         echo "<div class='list proposed events'>";
         $proposed = get_open_proposed_events();
-        foreach ($proposed as $p) {
+        if ($proposed) foreach ($proposed as $p) {
             echo "<div class='info event'>";
             echo "<div class='proposedeventid'>".htmlquote($p['proposedeventid'])."</div>";
             echo "<div class='name'>".htmlquote($p['name'])."</div>";

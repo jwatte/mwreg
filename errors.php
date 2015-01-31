@@ -1,6 +1,7 @@
 <?php
 
 function errors_fatal($x) {
+    logerror("FATAL: ".print_r($x, true));
     ob_end_clean();
 ?><!DOCTYPE html>
 <head><title>Mech Warfare - an error!</title>

@@ -15,7 +15,7 @@ if (!$pdo) {
 
 $stmtcache = array();
 
-function _db_prep($txt, $args) {
+function _db_prep($txt, array $args) {
     global $pdo;
     global $stmtcache;
     $q = null;
@@ -39,7 +39,7 @@ function _db_prep($txt, $args) {
     return $q;
 }
 
-function db_query($txt, $args) {
+function db_query($txt, array $args) {
     $q = _db_prep($txt, $args);
     if (!$q) {
         return null;

@@ -28,7 +28,7 @@ if ($user) {
             foreach (array('name', 'location', 'starttime', 'endtime', 'url') as $x => $i) {
                 echo "<span class='$i'>".htmlquote($e[$i])."</span>";
             }
-            echo "<span class='action details'><a href='/mwreg/detail.php?id=$e[eventid]'>See More</a></span>";
+            echo "<span class='action details'><a href='/mwreg/events.php?id=$e[eventid]'>See More</a></span>";
             echo "</div>";
         }
     }

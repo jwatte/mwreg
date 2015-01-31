@@ -19,13 +19,13 @@ div.header div.userinfo, div.header div.loginlink {
 a {
     text-decoration: none;
     padding: 0.5em 1.0em;
-    color: #ffffff;
+    color: #ffff80;
 }
 a:hover {
     color: #e03030;
 }
 a:visited {
-    color: #ffffff;
+    color: #ffff80;
 }
 a:visited:hover {
     color: #e03030;
@@ -164,4 +164,28 @@ div.info div {
 }
 div.text {
     margin-top: 1em;
+}
+div.upcoming div {
+    padding: 0.5em 1em;
+}
+div.upcoming div:nth-child(even) {
+    background-color: #202020;
+}
+div.event span.name {
+    padding: 0.2em 0.6em;
+    display: block;
+}
+div.event span.location {
+    padding: 0.2em 0.6em;
+    display: block;
+}
+div.event span.starttime {
+    padding: 0.2em 0.6em;
+}
+div.event span.endtime {
+    padding: 0.2em 0.6em;
+}
+div.event span.url {
+    display: block;
+    padding: 0.2em 0.6em;
 }
