@@ -52,9 +52,9 @@ if ($_action && $_mechid) {
     else {
         $allmechs = get_all_mechs();
         echo "<div class='heading'>All Mechs</div>";
-        echo "<div class='allmechs'>";
+        echo "<div class='allmechs list'>";
         foreach ($allmechs as $mech) {
-            echo "<div class='info mechrow'>";
+            echo "<div class='item mechrow'>";
             echo "<div class='name'><span class='label'>Name</span><span class='value'>".htmlquote($mech['name'])."</span></div>";
             echo "<div class='team'><span class='label'>Team</span></span class='value'>".htmlquote($mech['teamname'])."</span></div>";
             echo "</div>";
@@ -68,7 +68,7 @@ if ($_action && $_mechid) {
         } else {
             echo "<div class='yourmechs'><div class='heading'>Your Mechs</div>";
             foreach ($usermechs as $mech) {
-                echo "<div class='info mechrow'>";
+                echo "<div class='item mechrow'>";
                 echo "<div class='name'><span class='label'>Name</span><span class='value'>".htmlquote($mech['name'])."</span></div>";
                 echo "<div class='team'><span class='label'>Team</span><span class='value'>".htmlquote($mech['teamname'])."</span></div>";
                 echo "</div>";

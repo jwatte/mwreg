@@ -30,7 +30,7 @@ page_header('Mech Warfare Registration -- Teams');
                 echo "<div class='listfield'><span class='label'>$label</span><span class='value'>".htmlquote($team[$tag])."</span></div>";
             }
         }
-        echo "<div class='info team'>";
+        echo "<div class='team'>";
         echo "<div class='heading'>Team</div>";
         echo "<div class='teamid'><span class='label'>ID</span><span class='value'>".htmlquote($team['teamid'])."</span></div>";
         emit_field($team, 'name', 'Team Name');
@@ -47,7 +47,7 @@ page_header('Mech Warfare Registration -- Teams');
         echo "<div class='list mechs'>";
         echo "<div class='heading'>Team Mechs</div>";
         foreach ($team['mechs'] as $mech) {
-            echo "<div class='info mech'>";
+            echo "<div class='item mech'>";
             echo "<div class='mechid'>".htmlquote($mech['mechid'])."</div>";
             echo "<div class='mechname'>".htmlquote($mech['name'])."</div>";
             echo "<div class='mechurl'>".htmlquote($mech['url'])."</div>";
@@ -86,7 +86,7 @@ page_header('Mech Warfare Registration -- Teams');
         $_isadmin = false;
         $_applicant = false;
         foreach ($team['members'] as $member) {
-            echo "<div class='info team'>";
+            echo "<div class='item team'>";
             echo "<div class='userid'>".htmlquote($member['userid'])."</div>";
             echo "<div class='username'>".htmlquote($member['name'])."</div>";
             echo "<div class='membersince'>".htmlquote($member['membersince'])."</div>";
@@ -137,7 +137,7 @@ page_header('Mech Warfare Registration -- Teams');
                 echo "<div class='heading'>Applicants</div>";
                 echo "<div class='list applicants'>";
                 foreach ($team['applicants'] as $member) {
-                    echo "<div class='info teammember'>";
+                    echo "<div class='item teammember'>";
                     echo "<div class='userid'>".htmlquote($member['userid'])."</div>";
                     echo "<div class='username'>".htmlquote($member['name'])."</div>";
                     echo "<div class='membersince'>".htmlquote($member['membersince'])."</div>";
@@ -169,7 +169,7 @@ page_header('Mech Warfare Registration -- Teams');
             "LIMIT $limit OFFSET $offset", array());
         if ($teams) {
             foreach ($teams as $t) {
-                echo "<div class='team info'>";
+                echo "<div class='team item'>";
                 echo "<span class='teamid'>".htmlquote($t['teamid'])."</span>";
                 echo "<span class='teamname'>".htmlquote($t['teamname'])."</span>";
                 echo "<span class='username'>".htmlquote($t['username'])."</span>";

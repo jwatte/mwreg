@@ -123,10 +123,10 @@ div.teaminfo span.details {
     display: inline-block;
     width: 5em;
 }
-div.info.team span {
+div.item.team span {
     display: inline-block;
 }
-div.info.team span.label {
+div.item.team span.label {
     width: 7em;
 }
 .result {
@@ -139,24 +139,24 @@ form button {
     border-color: #904040;
     margin: 0.2em 0.2em;
 }
-div.list div.info div {
+div.list div.item div {
     display: inline-block;
     margin: 0.2em 0.5em;
 }
-div.info:nth-child(even) {
+div.item:nth-child(even) {
     background-color: #202020;
 }
-div.info span.label {
+div.item span.label {
     min-width: 5em;;
     padding-right: 1em;
 }
 div.mechrow {
     padding: 0.5em 1em;
 }
-div.info form {
+div.item form {
     display: inline-block;
 }
-div.info div {
+div.item div {
     min-width: 5em;
 }
 div.text {
@@ -186,7 +186,7 @@ div.event span.url {
     display: block;
     padding: 0.2em 0.6em;
 }
-div.event.info {
+div.event.item {
     padding: 0.5em 1em 1.5em 1em;
 }
 form.listitem div, form.listitem button {
@@ -198,4 +198,14 @@ div.signedup > div.mech > div {
     display: inline-block;
     padding: 0.5em 0.5em;
     min-width: 6em;
+}
+div.team.item > span {
+    padding: 0.5em 0.5em;
+    min-width: 6em;
+}
+div.info {
+    padding: 0.5em 0.5em;
+}
+div.allmechs.list div.mechrow div {
+    display: block;
 }

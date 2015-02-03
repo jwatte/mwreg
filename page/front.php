@@ -24,7 +24,7 @@ if ($user) {
         echo "<div class='nodata'>No currently scheduled upcoming events.</div>";
     } else {
         foreach ($_events as $k => $e) {
-            echo "<div class='event info'>";
+            echo "<div class='event item'>";
             foreach (array('name', 'location', 'starttime', 'endtime', 'url') as $x => $i) {
                 if ($x == 'name') {
                     echo "<a href='events.php?id=".htmlquote($e['eventid'])."'>";
@@ -48,7 +48,7 @@ if ($user) {
         echo "<div class='nodata'>No previous events yet.</div>";
     } else {
         foreach ($_events as $k => $e) {
-            echo "<div class='event info'>";
+            echo "<div class='event item'>";
             foreach (array('name', 'location', 'starttime', 'endtime', 'url') as $x => $i) {
                 if ($x == 'name') {
                     echo "<a href='events.php?id=".htmlquote($e['eventid'])."'>";

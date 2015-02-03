@@ -22,7 +22,7 @@ page_header('Mech Warfare Registration -- Events');
             echo "<form method='post'>";
         } else {
             function fn($name, $value) {
-                echo "<div class='info'><div class='label'>$name:</div><div class='value'>".htmlquote($value)."</div></div>";
+                echo "<div class='item'><div class='label'>$name:</div><div class='value'>".htmlquote($value)."</div></div>";
             }
             echo "<div class='list event'>";
         }
@@ -104,7 +104,7 @@ page_header('Mech Warfare Registration -- Events');
         $events = get_all_future_events();
         echo "<div class='list events'>";
         foreach ($events as $e) {
-            echo "<div class='info event'>";
+            echo "<div class='item event'>";
             echo "<div class='eventid'>".htmlquote($e['eventid'])."</div>";
             echo "<div class='name'>".htmlquote($e['name'])."</div>";
             echo "<div class='location'>".htmlquote($e['location'])."</div>";
@@ -121,7 +121,7 @@ page_header('Mech Warfare Registration -- Events');
         echo "<div class='list proposed events'>";
         $proposed = get_open_proposed_events();
         if ($proposed) foreach ($proposed as $p) {
-            echo "<div class='info event'>";
+            echo "<div class='item event'>";
             echo "<div class='proposedeventid'>".htmlquote($p['proposedeventid'])."</div>";
             echo "<div class='name'>".htmlquote($p['name'])."</div>";
             echo "<div class='location'>".htmlquote($p['location'])."</div>";
