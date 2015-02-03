@@ -1,5 +1,7 @@
 <?php
 
+require_once 'mailinfo.php';
+
 function get_all_mechs() {
     return db_query(
         "SELECT m.mechid AS mechid, m.name AS name, m.builder AS builder, m.team AS team, m.url AS url, ".
@@ -74,12 +76,11 @@ function add_mech_to_team($mechid, array $team) {
     }
     db_query("UPDATE mechs SET team=:teamid WHERE mechid=:mechid",
         array('teamid'=>$team['teamid'], 'mechid'=>$mechid));
-    mail($builder['email'],
+    email_by_address($builder['email'],
         "Your mech was added to team $team[name]",
         "The mech $mech[name] that you are listed as builder for was added \n".
         "to the team $team[name]. You can view the team roster at: \n".
-        "$URLHOST$ROOTPATH/teams.php?id=$team[teamid]\n",
-        "From: $MAILFROM");
+        "$URLHOST$ROOTPATH/teams.php?id=$team[teamid]\n");
 }
 
 function remove_mech_from_team(array $mech, array $team) {
@@ -92,19 +93,17 @@ function remove_mech_from_team(array $mech, array $team) {
     }
     db_query("UPDATE mechs SET team=NULL WHERE mechid=:mechid AND team=:teamid",
         array('mechid'=>$mech['mechid'], 'teamid'=>$team['teamid']));
-    mail($builder['email'],
+    email_by_address($builder['email'],
         "Your mech was removed from team $team[name]",
         "The mech $mech[name] that you are listed as builder for was removed \n".
         "from the team $team[name]. You can view the team roster at: \n".
-        "$URLHOST$ROOTPATH/teams.php?id=$team[teamid]\n",
-        "From: $MAILFROM");
+        "$URLHOST$ROOTPATH/teams.php?id=$team[teamid]\n");
     $leader = get_user_by_id($team['leader']);
-    mail($leader['email'],
+    email_by_address($leader['email'],
         "The mech '$mech[name]' was removed from team '$team[name]'",
         "The mech '$mech[name]' by builder '$builder[name]' was removed \n".
         "from the team $team[name]. You can view the team roster at: \n".
-        "$URLHOST$ROOTPATH/teams.php?id=$team[teamid]\n",
-        "From: $MAILFROM");
+        "$URLHOST$ROOTPATH/teams.php?id=$team[teamid]\n");
 }
 
 function get_events_for_mech($mid) {
@@ -152,4 +151,34 @@ function is_valid_mech_url($url) {
     return true;
 }
 
+function get_mechs_by_event($eventid) {
+    $ret = db_query("SELECT m.mechid AS mechid, m.name AS name, m.builder AS builder, m.team AS team, m.url AS url, ".
+        "u.name AS buildername, t.name AS teamname FROM mechs m, teams t, users u, mech_event_registration r ".
+        "WHERE r.eventid = :eventid AND r.mechid = m.mechid AND r.teamid = t.teamid AND m.builder = u.userid ",
+        array('eventid'=>$eventid));
+    return $ret ? $ret : null;
+}
+
+function sign_up_mech_for_event(array $mech, array $team, array $event) {
+    global $user;
+    //  TODO: do this in a transaction
+    $r = db_query("SELECT * FROM mech_event_registration WHERE mechid = :mechid",
+        array('mechid'=>$mech['mechid']));
+    if ($r && $r[0]) {
+        errors_fatal("The mech $mech[name] (id $mech[mechid]) is already signed up for event $event[name].");
+    }
+    $r = db_query("INSERT INTO mech_event_registration ".
+        "(mechid, eventid, reguser, regtime, comments, paid, teamid)".
+        "VALUES (:mechid, :eventid, :reguser, NOW(), :comments, :paid, :teamid)",
+        array(
+            'mechid'=>$mech['mechid'],
+            'eventid'=>$event['eventid'],
+            'reguser'=>$user['userid'],
+            'comments'=>'',
+            'paid'=>0,
+            'teamid'=>$team['teamid']
+        ));
+    // who do I send email to?
+    // team leader, event registrar, mech builder?
+}
 

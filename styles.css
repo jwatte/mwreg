@@ -143,9 +143,6 @@ div.list div.info div {
     display: inline-block;
     margin: 0.2em 0.5em;
 }
-div.teaminfo:nth-child(even) {
-    background-color: #202020;
-}
 div.info:nth-child(even) {
     background-color: #202020;
 }
@@ -188,4 +185,17 @@ div.event span.endtime {
 div.event span.url {
     display: block;
     padding: 0.2em 0.6em;
+}
+div.event.info {
+    padding: 0.5em 1em 1.5em 1em;
+}
+form.listitem div, form.listitem button {
+    display: inline-block;
+    padding: 0.5em 0.5em;;
+    min-width: 6em;
+}
+div.signedup > div.mech > div {
+    display: inline-block;
+    padding: 0.5em 0.5em;
+    min-width: 6em;
 }

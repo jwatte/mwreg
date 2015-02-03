@@ -1,5 +1,7 @@
 <?php
 
+require_once 'mailinfo.php';
+
 function make_new_team() {
     global $user;
     if (!$user) {
@@ -58,6 +60,14 @@ function get_teams_by_leader($leader) {
     return $t;
 }
 
+function get_teams_by_admin($admin) {
+    $t = db_query("SELECT t.name as name, t.teamid as teamid, t.leader as leader, t.url as url, m.teamadmin as teamadmin ".
+        "FROM teams t, teammembers m ".
+        "WHERE t.teamid = m.teamid AND m.teamadmin > 0 AND m.approved > 0 AND m.userid = :admin",
+        array('admin'=>$admin));
+    return $t ? $t : null;
+}
+
 function is_valid_team_name($name) {
     return strlen($name) >= 5 && strlen($name) <= 95 && strpos($name, '@') === false && strpos($name, '://') === false &&
         strpos($name, '<') === false && strpos($name, '&') === false;
@@ -112,18 +122,16 @@ function apply_for_team($teamid, array$user) {
     db_query("INSERT INTO teammembers(teamid, userid, membersince) VALUES" .
         "(:teamid, :userid, NOW()) ON DUPLICATE KEY UPDATE membersince=NOW()",
             array('teamid'=>$teamid, 'userid'=>$user['userid']));
-    mail($user['email'],
+    email_by_address($user['email'],
         "You applied for team $team[name]",
         "You applied for membership in team $team[name] on Mech Warfare Registration.\n".
-        "Once the team administrator has approved your membership, you will be sent another email.\n",
-        "From: $MAILFROM");
+        "Once the team administrator has approved your membership, you will be sent another email.\n");
     $leader = get_user_by_id($team['leader']);
-    mail($leader['email'],
+    email_by_address($leader['email'],
         "User $user[name] applied for membership in team $team[name]",
         "User $user[name] id $user[userid] applied for membership in team $team[name] on Mech Warfare Registration.\n".
         "You can approve or reject this application in the team control panel.\n".
-        "$URLHOST$ROOTPATH/teams.php?id=$team[teamid]\n",
-        "From: $MAILFROM");
+        "$URLHOST$ROOTPATH/teams.php?id=$team[teamid]\n");
 }
 
 function approve_team_member($teamid, array $iuser) {
@@ -133,12 +141,11 @@ function approve_team_member($teamid, array $iuser) {
     $team = get_team_by_id($teamid);
     db_query("UPDATE teammembers SET approved=1 WHERE teamid=:teamid AND userid=:userid",
         array('teamid'=>$teamid, 'userid'=>$iuser['userid']));
-    mail($iuser['email'],
+    email_by_address($iuser['email'],
         "You were approved as member in team $team[name]",
         "The administrator for team $team[name] on Mech Warfare Registration approved your application for membership.\n".
         "You can view information about this team at:\n".
-        "$URLHOST$ROOTPATH/teams.php?id=$team[teamid]\n",
-        "From: $MAILFROM");
+        "$URLHOST$ROOTPATH/teams.php?id=$team[teamid]\n");
 }
 
 function reject_team_member($teamid, array $iuser) {
@@ -155,19 +162,25 @@ function remove_member_from_team(array $team, array $member) {
     }
     db_query("DELETE FROM teammembers WHERE teamid=:teamid AND userid=:userid",
         array('teamid'=>$team['teamid'], 'userid'=>$member['userid']));
-    mail($member['email'],
+    email_by_address($member['email'],
         "You were removed as member from team $team[name]",
         "The administrator for team $team[name] on Mech Warfare Registration removed you from membership of the team.\n".
         "You can view information about this team at:\n".
-        "$URLHOST$ROOTPATH/teams.php?id=$team[teamid]\n",
-        "From: $MAILFROM");
+        "$URLHOST$ROOTPATH/teams.php?id=$team[teamid]\n");
     $leader = get_user_by_id($team['leader']);
-    mail($leader['email'],
+    email_by_address($leader['email'],
         "User $member[name] was removed from team $team[name]",
         "User $member[name] id $member[userid] was removed from membership in team $team[name] on Mech Warfare Registration.\n".
         "You can view information about this team at:\n".
-        "$URLHOST$ROOTPATH/teams.php?id=$team[teamid]\n",
-        "From: $MAILFROM");
+        "$URLHOST$ROOTPATH/teams.php?id=$team[teamid]\n");
 }
 
+function is_team_mech(array $mech, array $team) {
+    foreach ($team['mechs'] as $m) {
+        if ($m['mechid'] == $mech['mechid']) {
+            return true;
+        }
+    }
+    return false;
+}
 

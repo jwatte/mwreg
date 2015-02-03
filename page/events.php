@@ -1,5 +1,9 @@
 <?php
 require_once('header.php');
+require_once('mechinfo.php');
+require_once('eventinfo.php');
+require_once('teaminfo.php');
+require_once('userinfo.php');
 page_header('Mech Warfare Registration -- Events');
 ?>
 <div class='content'>
@@ -27,11 +31,54 @@ page_header('Mech Warfare Registration -- Events');
         fn('starttime', $event['starttime']);
         fn('endtime', $event['endtime']);
         fn('url', $event['url']);
-        if ($_admin) {
+        if ($_isadmin) {
             echo get_csrf_input();
             echo "<button name='action' value='editevent'>Update Event</button>";
             echo "</form>";
         } else {
+            echo "</div>";
+        }
+        $mechs = get_mechs_by_event($event['eventid']);
+        $imadmin = get_teams_by_admin($user['userid']);
+        if ($imadmin) {
+            /* client-side filtering */
+            $hasmech = array();
+            if ($mechs) {
+                foreach ($mechs as $ix => $m) {
+                    $hasmech[$m['mechid']] = true;
+                }
+            }
+            echo "<div class='heading'>Sign Up Mechs</div>";
+            echo "<div class='signup list'>";
+            foreach ($imadmin as $ix => $t) {
+                $m = get_mechs_by_teamid($t['teamid']);
+                foreach ($m as $mix => $m) {
+                    echo "<form class='teammechsignup item listitem' method='post'>";
+                    echo "<div class='teamname'>".htmlquote($t['name'])."</div>";
+                    echo "<div class='mechname'>".htmlquote($m['name'])."</div>";
+                    if (!$hasmech[$m['mechid']]) {
+                        echo "<button name='action' value='signupmech'>Sign Up</button>";
+                        echo get_csrf_input();
+                        echo "<input type='hidden' name='mechid' value='".htmlquote($m['mechid'])."'/>";
+                        echo "<input type='hidden' name='teamid' value='".htmlquote($t['teamid'])."'/>";
+                    } else {
+                        echo "<div class='info'>Already Signed Up</div>";
+                    }
+                    echo "</form>";
+                }
+            }
+            echo "</div>";
+        }
+        if ($mechs) {
+            echo "<div class='heading'>Signed Up Mechs</div>";
+            echo "<div class='mechs signedup list'>";
+            foreach ($mechs as $ix => $m) {
+                echo "<div class='item mech'>";
+                echo "<div class='mechname'>".htmlquote($m['name'])."</div>";
+                echo "<div class='buildername'>".htmlquote($m['buildername'])."</div>";
+                echo "<div class='teamname'>".htmlquote($m['teamname'])."</div>";
+                echo "</div>"; 
+            }
             echo "</div>";
         }
     } else if ($_action == 'proposeevent') {

@@ -1,6 +1,7 @@
 <?php
 
 require_once 'dbconnect.php';
+require_once 'mailinfo.php';
 
 $user = null;
 $session = null;
@@ -118,12 +119,11 @@ function user_register($name, $email, $password) {
         array('userid'=>$user['userid'], 'name'=>$name));
     db_query("INSERT INTO useremaillog(userid, email, setdate) VALUES(:userid, :email, NOW())",
         array('userid'=>$user['userid'], 'email'=>$email));
-    $res = mail($email, "Verify your Mech Warfare Registration", 
+    $res = email_by_address($email, "Verify your Mech Warfare Registration", 
         "You recently registered for the Mech Warfware site. Please click this URL to verify that the email you provided is correct.\n".
         "$URLHOST$ROOTPATH/verifyok.php?code=".urlencode($vk)."&email=$email\n".
         "Registered name: $name \n".
-        "If you didn't register for the site, someone else must have entered your e-mail address. Please just ignore this message if that is the case.\n",
-        "From: $MAILFROM");
+        "If you didn't register for the site, someone else must have entered your e-mail address. Please just ignore this message if that is the case.\n");
     if (!$res) {
         return "The user was created, but the verification email could not be sent.";
     }
@@ -183,11 +183,10 @@ function send_user_name_email_reminder($name) {
     if (!$u || count($u) != 1) {
         return "No such user was found.";
     }
-    if (!mail($u[0]['email'],
+    if (!email_by_address($u[0]['email'],
         'Mech Warfare Registration E-mail Reminder',
         "This is a brief reminder from the Mech Warfare Registration site.\n".
-        "The email address for the account '$name' is: {$u[0][email]}\n",
-        "From: $MAILFROM")) {
+        "The email address for the account '$name' is: {$u[0][email]}\n")) {
         return "Not able to send reminder email.";
     }
     return '';
@@ -202,12 +201,11 @@ function send_user_password_reset($email) {
         return "No such e-mail was found.";
     }
     $vtok = make_verify_key($email);
-    if (!mail($u[0]['email'],
+    if (!email_by_address($u[0]['email'],
         'Your Password Reset Link from Mech Warfare Registration',
         "You recently requested a password reset link from the Mech Warfare Registration site. \n".
         "Click this link and enter a new password to proceed: \n".
-        "$URLHOST$ROOTPATH/reset.php?email=$email&code=".urlencode($vtok)." \n",
-        "From: $MAILFROM")) {
+        "$URLHOST$ROOTPATH/reset.php?email=$email&code=".urlencode($vtok)." \n")) {
         return 'Could not send password reset mail.';
     }
     $q = db_query("UPDATE users SET verifykey=:key WHERE userid=:userid",
@@ -246,14 +244,13 @@ function user_change_name($user, $name) {
         return false;
     }
     db_query("INSERT INTO usernamelog(userid, name, setdate) VALUES(:userid, :name, NOW())", array('userid'=>$user['userid'], 'name'=>$name));
-    mail($user['email'],
+    email_by_address($user['email'],
         "Mech Warfare Registration Name Change",
         "An account registered to the e-mail address {$user[email]} recently changed the user name \n".
         "from {$user[name]} to $name. Assuming you intended to do this, you can archive this message. \n".
         "An account is allowed up to three name changes in a 30-day period, and names must not be \n".
         "offensive or misleading. \n".
-        "Thanks for participating in Mech Warfare! \n",
-        "From: $MAILFROM");
+        "Thanks for participating in Mech Warfare! \n");
     db_query("INSERT INTO useriplog(userid, ipaddr, attime) VALUES(:userid, :ipaddr, :attime)",
         array('userid'=>$user['userid'], 'ipaddr'=>$_SERVER['REMOTE_ADDR'], 'attime'=>strftime("%Y-%m-%d %H:%M:%S")));
     return true;
@@ -279,21 +276,19 @@ function user_change_email($user, $email) {
         array('email'=>$email, 'userid'=>$user['userid'], 'vk'=>$vk))) {
         return false;   //  DB error
     }
-    mail($email, 
+    email_by_address($email, 
         "Mech Warfare Registration E-mail Address Verification",
         "The user account {$user[name]} recently requested to change the e-mail address for \n".
         "the account to $email. To verify this new address, please click this link: \n".
         "$URLHOST$ROOTPATH/verifyok.php?code=".urlencode($vk)."&email=$email\n".
-        "Thanks for your interest in Mech Warfare! \n",
-        "From: $MAILFROM");
-    mail($user['email'],
+        "Thanks for your interest in Mech Warfare! \n");
+    email_by_address($user['email'],
         "Mech Warfare Registration E-mail Change Notification",
         "Recently, the account {$user[name]} requested a change of e-mail address from the \n".
         "address {$user[email]} (to which this message is sent) to the address \n".
         "$email \n".
         "Assuming that you intended to make this change, click on the verification link in \n".
-        "email sent to the new address. \n",
-        "From: $MAILFROM");
+        "email sent to the new address. \n");
     db_query("INSERT INTO useriplog(userid, ipaddr, attime) VALUES(:userid, :ipaddr, :attime)",
         array('userid'=>$user['userid'], 'ipaddr'=>$_SERVER['REMOTE_ADDR'], 'attime'=>strftime("%Y-%m-%d %H:%M:%S")));
     return true;
@@ -306,12 +301,11 @@ function user_change_password($user, $password) {
         array('hash'=>$hash, 'userid'=>$user['userid']))) {
         return false;
     }
-    mail($user['email'],
+    email_by_address($user['email'],
         "Mech Warfare Registration Password Change Notification",
         "Recently, the account {$user[name]} requested a change of password. \n".
         "Assuming this was you, you can archive this message; please use your new \n".
-        "password the next time you log in. \n",
-        "From: $MAILFROM");
+        "password the next time you log in. \n");
     db_query("INSERT INTO useriplog(userid, ipaddr, attime) VALUES(:userid, :ipaddr, :attime)",
         array('userid'=>$user['userid'], 'ipaddr'=>$_SERVER['REMOTE_ADDR'], 'attime'=>strftime("%Y-%m-%d %H:%M:%S")));
     return true;

@@ -169,7 +169,7 @@ page_header('Mech Warfare Registration -- Teams');
             "LIMIT $limit OFFSET $offset", array());
         if ($teams) {
             foreach ($teams as $t) {
-                echo "<div class='teaminfo'>";
+                echo "<div class='team info'>";
                 echo "<span class='teamid'>".htmlquote($t['teamid'])."</span>";
                 echo "<span class='teamname'>".htmlquote($t['teamname'])."</span>";
                 echo "<span class='username'>".htmlquote($t['username'])."</span>";

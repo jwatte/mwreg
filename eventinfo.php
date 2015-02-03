@@ -77,24 +77,22 @@ function propose_event(
         'submittedtime'=>$now->format(datetime::W3C)
     ), 'proposedeventid');
     if ($id) {
-        mail($subuser['email'],
+        email_by-address($subuser['email'],
             "Your event was proposed to Mech Warfare Registration",
             "The event named '$name' was proposed at Mech Warfare Registration. \n".
             "A moderator will approve or reject this proposal, and you will receive \n".
             "a second email when that happens.\n".
-            "Thank you for using Mech Warfare Registration!\n",
-            "From: $MAILFROM");
+            "Thank you for using Mech Warfare Registration!\n");
         $au = get_admin_users();
         foreach ($au as $k => $v) {
-            mail($v['email'],
+            email_by_address($v['email'],
                 "New event proposed for Mech Warfare Registration",
                 "An event was proposed for Mech Warfare Registration:\n".
                 "Name: $name\n".
                 "Submitter: $subuser[name]\n".
                 "Start: ".$starttime->format(datetime::W3C)."\n".
                 "You can manage proposed events at \n".
-                "$URLHOST$ROOTPATH/proposedevents.php\n",
-                "From: $MAILFROM");
+                "$URLHOST$ROOTPATH/proposedevents.php\n");
         }
     }
     return $id ? array(true, $id) : array(false, "Failure to insert proposed event.");
@@ -145,13 +143,12 @@ function approve_proposed_event(array $event, array $user) {
     );
     db_query("UPDATE proposedevents SET approver=:approver, approvedtime=NOW() WHERE proposedeventid=:id",
         array('approver'=>$user['userid'], 'id'=>$event['proposedeventid']));
-    mail($user['email'],
+    email_by_address($user['email'],
         "Your event named $event[name] was accepted",
         "You proposed an event named $event[name] for the Mech Warfar Registration \n".
         "web site. A moderator has approved this event, and it should now be visible \n".
         "on the event calendar: \n".
-        "$URLHOST$ROOTPATH/events.php?id=$id\n",
-        "From: $MAILFROM");
+        "$URLHOST$ROOTPATH/events.php?id=$id\n");
 
     return $id;
 }
@@ -170,13 +167,12 @@ function reject_proposed_event(array $event, array $user) {
     }
     db_query("DELETE FROM proposedevents WHERE proposedeventid=:id",
         array('id'=>$event['proposedeventid']));
-    mail($user['email'],
+    email_by_address($user['email'],
         "Your event named $event[name] was rejected",
         "You proposed an event named $event[name] for the Mech Warfar Registration \n".
         "web site. A moderator has rejected this event for some reason. You can \n".
         "see a list of currently accepted events here: \n".
-        "$URLHOST$ROOTPATH/events.php\n",
-        "From: $MAILFROM");
+        "$URLHOST$ROOTPATH/events.php\n");
 }
 
 function is_valid_event_name($name) {

@@ -21,13 +21,15 @@ DROP TABLE IF EXISTS `mech_event_registration`;
 CREATE TABLE `mech_event_registration` (
   `mechid` int(10) unsigned NOT NULL,
   `eventid` int(10) unsigned NOT NULL,
+  `teamid` int(10) unsigned NOT NULL,
   `reguser` int(10) unsigned NOT NULL,
   `regtime` datetime DEFAULT NULL,
   `comments` varchar(255) DEFAULT NULL,
   `paid` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`mechid`,`eventid`),
   KEY `reguser` (`reguser`),
-  KEY `eventid` (`eventid`)
+  KEY `eventid` (`eventid`),
+  KEY `teamid` (`teamid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `proposedevents`;
@@ -135,5 +137,16 @@ CREATE TABLE `users` (
   `adminlevel` tinyint(4) DEFAULT '0',
   PRIMARY KEY (`userid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=400000 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `sentmails`;
+CREATE TABLE `sentmails` (
+      `sentmailid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+      `address` varchar(255) DEFAULT NULL,
+      `subject` varchar(255) DEFAULT NULL,
+      `sendtime` datetime DEFAULT NULL,
+      PRIMARY KEY (`sentmailid`),
+      KEY `address` (`address`),
+      KEY `sendtime` (`sendtime`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*!40101 SET character_set_client = @saved_cs_client */;

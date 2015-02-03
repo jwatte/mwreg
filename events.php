@@ -4,6 +4,8 @@ require_once 'init.php';
 require_once 'dbconnect.php';
 require_once 'userinfo.php';
 require_once 'eventinfo.php';
+require_once 'mechinfo.php';
+require_once 'teaminfo.php';
 require_once 'pages.php';
 
 $_action = @$_POST['action'];
@@ -13,7 +15,27 @@ if ($_action) {
     if (!verify_csrf(@$_POST['csrf'])) {
         errors_fatal("Verification of POST request failed.");
     }
-    if ($_action == 'proposeevent') {
+    if ($_action == 'signupmech') {
+        $_mech = get_mech_by_id($_POST['mechid']);
+        $_team = get_team_by_id($_POST['teamid']);
+        $_event = get_event_by_id($_eid);
+        if (!$_mech) {
+            errors_fatal("There is no mech id $_POST[mechid].");
+        }
+        if (!$_team) {
+            errors_fatal("There is no team id $_POST[teamid].");
+        }
+        if (!$_event) {
+            errors_fatal("There is no event id $_eid.");
+        }
+        if (!is_team_mech($_mech, $_team)) {
+            errors_fatal("The mech $_mech[name] is not available for team $_team[name].");
+        }
+        if (!is_team_admin($user['userid'], $_team)) {
+            errors_fatal("You are not an admin for team $_team[name].");
+        }
+        sign_up_mech_for_event($_mech, $_team, $_event);
+    } else if ($_action == 'proposeevent') {
     } else if ($_action == 'proposeeventsubmit') {
         list($ok, $err) = propose_event($user,
             $_POST['name'],
