@@ -103,7 +103,7 @@ function user_register($name, $email, $password) {
         }
         return $ret;
     }
-    $hash = password_hash($password);
+    $hash = password_hash($password, PASSWORD_DEFAULT);
     $vk = make_verify_key($email);
     $r = db_insert('users',
         array('name'=>$name,
@@ -296,7 +296,7 @@ function user_change_email($user, $email) {
 
 function user_change_password($user, $password) {
     global $MAILFROM;
-    $hash = password_hash($password);
+    $hash = password_hash($password, PASSWORD_DEFAULT);
     if (!db_query("UPDATE users SET passwordhash=:hash WHERE userid=:userid",
         array('hash'=>$hash, 'userid'=>$user['userid']))) {
         return false;

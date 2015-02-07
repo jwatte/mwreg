@@ -32,10 +32,10 @@ page_header('Mech Warfare Registration -- Teams');
         }
         echo "<div class='team'>";
         echo "<div class='heading'>Team</div>";
-        echo "<div class='teamid'><span class='label'>ID</span><span class='value'>".htmlquote($team['teamid'])."</span></div>";
+        echo "<div class='value teamid'><span class='label'>ID</span><span class='value'>".htmlquote($team['teamid'])."</span></div>";
         emit_field($team, 'name', 'Team Name');
         emit_field($team, 'url', 'Team URL');
-        echo "<div class='teamleader'><span class='label'>Leader</span><span class='value'>".htmlquote($team['leadername'])."</span></div>";
+        echo "<div class='value teamleader'><span class='label'>Leader</span><span class='value'>".htmlquote($team['leadername'])."</span></div>";
         echo "</div>";
         if ($_islead) {
             echo "<div class='formfield'><span class='label'>&nbsp;</span><span class='value'><button name='action' value='editteam'>Update Team</button></span></div>";
@@ -173,7 +173,7 @@ page_header('Mech Warfare Registration -- Teams');
                 echo "<span class='teamid'>".htmlquote($t['teamid'])."</span>";
                 echo "<span class='teamname'>".htmlquote($t['teamname'])."</span>";
                 echo "<span class='username'>".htmlquote($t['username'])."</span>";
-                echo "<span class='details'><a href='/mwreg/teams.php?id=".urlencode($t['teamid'])."'>Details</a></span>";
+                echo "<span class='details'><a href='$ROOTPATH/teams.php?id=".urlencode($t['teamid'])."'>Details</a></span>";
                 echo "</div>";
             }
         } else {
@@ -190,7 +190,7 @@ page_header('Mech Warfare Registration -- Teams');
                 if ($i * $limit <= $offset && ($i+1) * $limit > $offset) {
                     $cur = " current";
                 }
-                echo "<span class='page$cur'><a href='/mwreg/teams.php?offset=".($i * $limit)."'>".($i+1)."</a></span>";
+                echo "<span class='page$cur'><a href='$ROOTPATH/teams.php?offset=".($i * $limit)."'>".($i+1)."</a></span>";
             }
         }
         //  allow creation of one team, or editing the team you have
@@ -209,7 +209,7 @@ of any number of teams that invite you.</div>
         } else {
             $t = get_teams_by_leader($user['userid']);
             echo "<div class='info'>You are the leader for team '".htmlquote($t[0]['name'])."'. ";
-            echo "<span class='action teamedit'><a href='/mwreg/teams.php?id=".urlencode($t[0]['teamid'])."'>Edit</a></span></div>";
+            echo "<span class='action teamedit'><a href='$ROOTPATH/teams.php?id=".urlencode($t[0]['teamid'])."'>Edit</a></span></div>";
         }
     } else {
         echo "<div class='error'>You must be logged in to view team listings.</div>";

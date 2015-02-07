@@ -1,6 +1,6 @@
 <?php
-$URLHOST = "http://watte.net";
-$ROOTPATH = "/mwreg";
+$URLHOST = "http://mwreg.watte.net";
+$ROOTPATH = "";
 $MAILFROM = "mwreg@watte.net";
 $COOKIEHOST = ".watte.net";
 

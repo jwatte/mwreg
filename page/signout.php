@@ -1,4 +1,4 @@
 <?php
 
-setcookie('session', null, 0, '/mwreg/', '.watte.net', false, true);
-header('Location: /mwreg/');
+setcookie('session', null, 0, "$ROOTPATH/", $COOKIEHOST, false, true);
+header("Location: $ROOTPATH/");

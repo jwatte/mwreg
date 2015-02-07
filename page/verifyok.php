@@ -13,7 +13,7 @@ if ($verify_error) {
 Thank you for verifying your email address. You can now sign in using your name or email address, and password.
 </div>
 <div class='text'>
-<a href='/mwreg/signin.php'>Sign in</a>
+<a href='<?php echo $ROOTPATH; ?>/signin.php'>Sign in</a>
 </div>
 <?php
 }

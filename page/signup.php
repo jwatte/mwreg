@@ -15,7 +15,7 @@ if ($signup_error) {
 <div class='formfield'><span class='label'>E-mail Again:</span><span class='field'><input type='text' id='email2' name='email2' value='<?php echo htmlquote(@$_POST['email2']); ?>'/></div>
 <div class='formfield'><span class='label'>Password:</span><span class='field'><input type='password' id='password' name='password' value='<?php echo htmlquote(@$_POST['password']); ?>'/></div>
 <div class='formfield'><span class='label'>Password Again:</span><span class='field'><input type='password' id='password2' name='password2' value='<?php echo htmlquote(@$_POST['password2']); ?>'/></div>
-<div class='formfield'><span class='label'>Agreement:</span><span class='field'><label><input type='checkbox' id='tosok' name='tosok' value='1'/>I accept and agree to abide by the <a href='/mwreg/tos.php' target='_new'>Terms of Service</a>.</label></div>
+<div class='formfield'><span class='label'>Agreement:</span><span class='field'><label><input type='checkbox' id='tosok' name='tosok' value='1'/>I accept and agree to abide by the <a href='<?php echo $ROOTPATH; ?>/tos.php' target='_new'>Terms of Service</a>.</label></div>
 <div class='formfield'><span class='label'>&nbsp;</span><span class='field'><button name='submit' id='submit'>Sign up</button></div>
 </div>
 </form>
@@ -28,7 +28,7 @@ Thanks for your interest in Mech Warfare!
 <li>Your name <b>can</b> be found using the site &quot;find by email&quot; feature.</li>
 <li>The password must be at least six (6) and at most seventy-two (72) characters long. Please choose wisely.</li>
 <li>After registering, we will send you an email. You cannot log into your account until you read the email and click the link provided in it.</li>
-<li>Use of the site is subject to the <a href='/mwreg/tos.php' target='_new'>Terms of Service</a>. Signing up for the site means you give consent and agree to abide by these terms.</li>
+<li>Use of the site is subject to the <a href='<?php echo $ROOTPATH; ?>/tos.php' target='_new'>Terms of Service</a>. Signing up for the site means you give consent and agree to abide by these terms.</li>
 </ul>
 </div>
 </div>

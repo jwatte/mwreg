@@ -1,10 +1,11 @@
 <?php
 function page_header($title) {
+global $ROOTPATH;
 ?><!DOCTYPE html>
 <html>
 <head>
 <title><?php echo $title; ?></title>
-<link rel='stylesheet' href='/mwreg/styles.css'/>
+<link rel='stylesheet' href='<?php echo $ROOTPATH; ?>/styles.css'/>
 </head>
 <body>
 <div class='header'>
@@ -12,13 +13,12 @@ function page_header($title) {
     global $user;
     if ($user) {
         $gravatar = calc_gravatar($user['email']);
-        echo "<div class='userinfo'><span class='username'>".htmlquote($user[name])."</span><span class='action logout'><a href='/mwreg/logout.php'>Sign out</a></span></div>";
+        echo "<div class='userinfo'><span class='username'>".htmlquote($user[name])."</span><span class='action logout'><a href='$ROOTPATH/logout.php'>Sign out</a></span></div>";
     } else {
         $gravatar = '';
-        echo "<div class='loginlink'><span class='action login'><a href='/mwreg/signin.php'>Sign in</a></span><span class='action register'><a href='/mwreg/signup.php'>Sign up</a></span></div>";
+        echo "<div class='loginlink'><span class='action login'><a href='$ROOTPATH/signin.php'>Sign in</a></span><span class='action register'><a href='$ROOTPATH/signup.php'>Sign up</a></span></div>";
     }
-?>
-    <a href='/mwreg'><?php echo "$gravatar$title"; ?></a>
-</div><?php
+    echo "<a href='$ROOTPATH/'>$gravatar$title</a>";
+    echo "</div>";
 }
 ?>

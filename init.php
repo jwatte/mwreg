@@ -22,7 +22,8 @@ if ($_ver[0] < '5' || ($_ver[0] === '5' && $_ver[1] < '5')) {
         }
         return $pw;
     }
-    function password_hash($pw) {
+define('PASSWORD_DEFAULT', 0);
+    function password_hash($pw, $algo) {
         $iter = 10;
         $salt = base64_encode(openssl_random_pseudo_bytes(32));
         return "x:$iter:$salt:"._password_work($pw, $iter, $salt);

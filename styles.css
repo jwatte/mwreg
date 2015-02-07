@@ -45,6 +45,10 @@ div.formfield span.label {
     display: inline-block;
     width: 10em;
 }
+div.value span.label {
+    display: inline-block;
+    width: 10em;
+}
 div.formfield input {
     width: 15em;
 }
@@ -126,9 +130,6 @@ div.teaminfo span.details {
 div.item.team span {
     display: inline-block;
 }
-div.item.team span.label {
-    width: 7em;
-}
 .result {
     color: #e0e030;
 }
@@ -147,7 +148,7 @@ div.item:nth-child(even) {
     background-color: #202020;
 }
 div.item span.label {
-    min-width: 5em;;
+    min-width: 7em;;
     padding-right: 1em;
 }
 div.mechrow {

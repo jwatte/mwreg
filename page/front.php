@@ -8,10 +8,10 @@ if ($user) {
 ?>
 <div class='userlinks'>
 <span class='label'>Manage:</span>
-<span class='action profile'><a href='/mwreg/profile.php'>Profile</a></span>
-<span class='action teams'><a href='/mwreg/teams.php'>Teams</a></span>
-<span class='action mechs'><a href='/mwreg/mechs.php'>Mechs</a></span>
-<span class='action events'><a href='/mwreg/events.php'>Events</a></span>
+<span class='action profile'><a href='<?php echo $ROOTPATH; ?>/profile.php'>Profile</a></span>
+<span class='action teams'><a href='<?php echo $ROOTPATH; ?>/teams.php'>Teams</a></span>
+<span class='action mechs'><a href='<?php echo $ROOTPATH; ?>/mechs.php'>Mechs</a></span>
+<span class='action events'><a href='<?php echo $ROOTPATH; ?>/events.php'>Events</a></span>
 </div>
 <?php
 }
@@ -34,7 +34,7 @@ if ($user) {
                     echo "</a>";
                 }
             }
-            echo "<span class='action details'><a href='/mwreg/events.php?id=$e[eventid]'>See More</a></span>";
+            echo "<span class='action details'><a href='$ROOTPATH/events.php?id=$e[eventid]'>See More</a></span>";
             echo "</div>";
         }
     }

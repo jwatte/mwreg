@@ -16,7 +16,7 @@ if (array_key_exists('code', $_POST) && array_key_exists('email', $_POST) &&
         } else if (!is_valid_password($pw)) {
             $reset_message = 'The password must be at least 6 characters.';
         } else {
-            $pwhash = password_hash($pw);
+            $pwhash = password_hash($pw, PASSWORD_DEFAULT);
             $email = trim($_POST['email']);
             db_query("UPDATE users SET passwordhash=:hash, verifykey='', verified=1 WHERE email=:email",
                 array('hash'=>$pwhash, 'email'=>$email));
